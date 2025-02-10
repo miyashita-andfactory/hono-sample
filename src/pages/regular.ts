@@ -1,13 +1,14 @@
 import { Hono } from "hono";
+import { renderPage } from "../components/layout.js";
 
-const schedules = new Hono();
+const regular = new Hono();
 
 let cachedData: any = null; // ✅ キャッシュ用の変数
 let lastFetchTime = 0; // ✅ 最後にAPIを取得した時間
 const CACHE_DURATION = 2 * 60 * 60 * 1000; // ✅ (2時間) キャッシュ
 
-schedules.get("/", async (c) => {
-  console.log("🔥 /schedules にリクエストが届いた！");
+regular.get("/", async (c) => {
+  console.log("🔥 /regular にリクエストが届いた！");
 
   try {
     // ✅ キャッシュがある & 2時間以内ならAPIアクセスをスキップ
@@ -15,7 +16,9 @@ schedules.get("/", async (c) => {
 
     if (cachedData && now - lastFetchTime < CACHE_DURATION) {
       console.log("⚡ キャッシュからデータを取得！");
-      return c.html(renderSchedulePage(cachedData));
+      return c.html(
+        renderPage("レビュラー スケジュール スケジュール", content(cachedData))
+      );
     }
 
     // ✅ APIからデータを取得
@@ -41,29 +44,26 @@ schedules.get("/", async (c) => {
     cachedData = data.result;
     lastFetchTime = now;
     console.log("✅ APIデータをキャッシュしました！");
-
-    return c.html(renderSchedulePage(cachedData));
+    return c.html(renderPage("レビュラー スケジュール", content(cachedData)));
   } catch (error) {
     console.error("❌ API Fetch Error:", error);
-    return c.html(`<h1>エラー</h1><p>APIデータ取得に失敗しました。</p>`, 500);
+    let errorMessage = "APIエラーが発生しました";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    return c.html(
+      renderPage(
+        "エラー",
+        `<h1>エラーが発生しました</h1><p>${errorMessage}</p>`
+      ),
+      500
+    );
   }
 });
 
 // ✅ HTML をレンダリングする関数（キャッシュからでも API からでも共通）
-const renderSchedulePage = (data: any) => `
-  <html>
-  <head>
-    <title>Splatoon 3 スケジュール</title>
-    <style>
-      body { font-family: Arial, sans-serif; padding: 20px; }
-      h1 { color: #333; }
-      ul { list-style-type: none; padding: 0; }
-      li { margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-      img { width: 100px; margin-right: 10px; }
-    </style>
-  </head>
-  <body>
-    <h1>Splatoon 3 スケジュール</h1>
+const content = (data: any) => `
+    <h1>レギュラー スケジュール</h1>
     <ul>
       ${data.regular
         .map(
@@ -79,8 +79,6 @@ const renderSchedulePage = (data: any) => `
         )
         .join("")}
     </ul>
-  </body>
-  </html>
 `;
 
-export default schedules;
+export default regular;
