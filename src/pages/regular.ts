@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { renderPage } from "../components/layout.js";
+import { formatScheduleTime } from "../utils/format-date.js";
 
 const regular = new Hono();
 
@@ -63,22 +64,36 @@ regular.get("/", async (c) => {
 
 // ✅ HTML をレンダリングする関数（キャッシュからでも API からでも共通）
 const content = (data: any) => `
-    <h1>レギュラー スケジュール</h1>
-    <ul>
-      ${data.regular
-        .map(
-          (match: any) => `
-        <li>
-          <strong>${match.start_time} - ${match.end_time}</strong><br>
-          ルール: ${match.rule.name}<br>
-          ステージ: ${match.stages[0].name} / ${match.stages[1].name}<br>
-          <img src="${match.stages[0].image}" alt="ステージ1">
-          <img src="${match.stages[1].image}" alt="ステージ2">
-        </li>
-      `
-        )
-        .join("")}
-    </ul>
+  <section class="regular">
+    <div class="regular-container">
+      <h1>レギュラー スケジュール</h1>
+      <ul class="list">
+        ${data.regular
+          .map(
+            (match: any) => `
+          <li class="item">
+            <p class="sub-title">ルール: ${match.rule.name}</p>
+            <p class="stages-title">ステージ</p>
+            <div class="stages-area">
+              <div class="stages-item">
+                <p>${match.stages[0].name}</p>
+                <img src="${match.stages[0].image}" alt="ステージ1">
+              </div>
+              <div class="stages-item">
+                <p>${match.stages[1].name}</p>
+                <img src="${match.stages[1].image}" alt="ステージ2">
+              </div>
+            </div>
+            <span class="date">${formatScheduleTime(
+              match.start_time
+            )} ~ ${formatScheduleTime(match.end_time)}</span>
+          </li>
+          `
+          )
+          .join("")}
+        </ul>
+      </div>
+    </section>
 `;
 
 export default regular;

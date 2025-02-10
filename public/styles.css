@@ -1,9 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Nico+Moji&display=swap");
+
 /* ベーススタイル */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f3f4f6;
+  font-family: "Nico Moji", sans-serif;
   color: #333;
-  padding: 20px;
 }
 
 /* ナビゲーション */
@@ -25,7 +25,7 @@ nav a:hover {
 }
 
 /* リストのスタイル */
-ul {
+/* ul {
   list-style-type: none;
   padding: 0;
 }
@@ -40,4 +40,95 @@ li {
 img {
   width: 100px;
   margin-right: 10px;
+} */
+
+/* regular page */
+.regular {
+  background-color: #7ac943;
+  width: 100%;
+}
+.regular-container {
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.regular h1 {
+  font-size: 30px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #f2f2f2;
+}
+.regular .list {
+}
+.regular .item {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 2px solid #1e1e1e;
+  border-radius: 10px;
+}
+.regular .item .date {
+  font-size: 18px;
+  display: inline-block;
+  font-weight: bold;
+  background-color: #ff6600;
+  padding: 5px 10px;
+  line-height: 1;
+  color: #f2f2f2;
+}
+.regular .sub-title {
+  font-size: 28px;
+  font-weight: bold;
+  background-color: #ffcc00;
+  color: #1e1e1e;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}
+.regular .stages-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.regular .stages-area {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.regular .stages-item {
+}
+.regular .stages-item p {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1e1e1e;
+}
+
+/* Splatoon color */
+.splatoon-green {
+  background-color: #39d800;
+}
+
+.splatoon-pink {
+  background-color: #ff007f;
+}
+
+.splatoon-blue {
+  background-color: #007fff;
+}
+
+.splatoon-orange {
+  background-color: #ff7f00;
+}
+
+.splatoon-purple {
+  background-color: #7f00ff;
+}
+
+.splatoon3-blue {
+  background-color: #0066cc;
+}
+
+.splatoon3-yellow {
+  background-color: #ffcc00;
 }
